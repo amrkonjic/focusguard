@@ -5,7 +5,7 @@ import { useWebSocket } from "../hooks/useWebSocket";
 import BreakRequestModal from "../components/BreakRequestModal";
 
 export default function GuardianPanel() {
-  const { roomCode, session, setSession, setStats, roomId } = useRoom();
+  const { roomCode, session, setSession, setStats } = useRoom();
   const navigate = useNavigate();
   const [breakRequest, setBreakRequest] = useState(null);
   const [elapsed, setElapsed] = useState(0);
@@ -15,12 +15,11 @@ export default function GuardianPanel() {
 
   const intervalRef = useRef(null);
   const pausedRef = useRef(false);
+  const pauseStartRef = useRef(null);
+  const totalPausedRef = useRef(0);
   const totalSeconds = session ? session.durationMinutes * 60 : 0;
 
   const autoJoin = useMemo(() => ({ roomCode, role: "guardian" }), [roomCode]);
-
-  const pauseStartRef = useRef(null);
-  const totalPausedRef = useRef(0);
 
   const { sendMessage } = useWebSocket((message) => {
     if (message.type === "SESSION_STARTED") {
@@ -45,7 +44,6 @@ export default function GuardianPanel() {
         totalPausedRef.current += Date.now() - pauseStartRef.current;
         pauseStartRef.current = null;
       }
-      
       setPaused(false);
       pausedRef.current = false;
       setBreakSecondsLeft(null);
@@ -57,36 +55,8 @@ export default function GuardianPanel() {
   }, autoJoin, !!session);
 
   useEffect(() => {
-    if (session) return;
-    if (!roomId) return;
-
-    fetch(`https://focusguard-cbhfgaauayh9eha7.westeurope-01.azurewebsites.net/api/sessions/room/${roomId}`)
-      .then(r => r.json())
-      .then(data => {
-        if (data.success) {
-          const s = data.session;
-          setSession({
-            ...s,
-            durationMinutes: s.duration_minutes ?? s.durationMinutes
-          });
-        }
-      })
-      .catch(err => console.error('Failed to fetch session:', err));
-  }, [roomId]);
-
-  useEffect(() => {
     if (!totalSeconds) return;
-    if (!session?.started_at) return;
-
-    const startedAt = new Date(session.started_at.replace(' ', 'T') + 'Z').getTime();
-    const alreadyElapsed = Math.min(
-      Math.floor((Date.now() - startedAt) / 1000),
-      totalSeconds
-    );
-
-    setElapsed(alreadyElapsed);
-
-    const startTime = Date.now() - alreadyElapsed * 1000;
+    const startTime = Date.now();
 
     intervalRef.current = setInterval(() => {
       if (pausedRef.current) return;
@@ -107,9 +77,7 @@ export default function GuardianPanel() {
     const interval = setInterval(() => {
       const remaining = Math.ceil((endTime - Date.now()) / 1000);
       setBreakSecondsLeft(remaining);
-      if (remaining <= 0) {
-        clearInterval(interval);
-      }
+      if (remaining <= 0) clearInterval(interval);
     }, 500);
 
     return () => clearInterval(interval);
@@ -138,7 +106,6 @@ export default function GuardianPanel() {
   const seconds = (secondsLeft % 60).toString().padStart(2, "0");
   const progress = totalSeconds ? (elapsed / totalSeconds) * 100 : 0;
   const circumference = 2 * Math.PI * 45;
-
   const breakMins = breakSecondsLeft !== null ? Math.floor(breakSecondsLeft / 60).toString().padStart(2, "0") : "00";
   const breakSecs = breakSecondsLeft !== null ? (breakSecondsLeft % 60).toString().padStart(2, "0") : "00";
 

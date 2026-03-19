@@ -4,7 +4,7 @@ import { useRoom } from "../context/RoomContext";
 import { useWebSocket } from "../hooks/useWebSocket";
 
 export default function Lobby() {
-  const { roomCode, role, setSession } = useRoom();
+  const { roomCode, role, setSession, setRoomId } = useRoom();
   const navigate = useNavigate();
   const [partnerJoined, setPartnerJoined] = useState(false);
   const [duration, setDuration] = useState(25);
@@ -12,7 +12,13 @@ export default function Lobby() {
   const { sendMessage } = useWebSocket((message) => {
     if (message.type === "ROOM_READY") setPartnerJoined(true);
     if (message.type === "SESSION_STARTED") {
-      setSession(message.session);
+      const s = message.session;
+      setSession({
+        ...s,
+        durationMinutes: s.duration_minutes ?? s.durationMinutes
+      });
+      setRoomId(s.room_id);
+      sessionStorage.setItem('roomId', s.room_id);
       navigate(role === "focuser" ? "/focus" : "/guardian");
     }
   });
