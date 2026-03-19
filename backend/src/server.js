@@ -11,9 +11,8 @@ const { handleConnection } = require('./websocket/wsHandler');
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
-
-// osiguraj da cors ne blokira requestove s frontenda 
-app.use(cors({ origin: process.env.FRONTEND_URL }));
+ 
+app.use(cors());
 app.use(express.json());
 
 // registriraj dvije grupe ruta na aplikaciju
