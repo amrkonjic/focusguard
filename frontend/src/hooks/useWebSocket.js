@@ -26,7 +26,7 @@ export function useWebSocket(onMessage, autoJoin = null, disableReconnect = fals
     function connect() {
       if (unmounted.current) return;
 
-      const socket = new WebSocket("ws://localhost:3001");
+      const socket = new WebSocket("wss://focusguard-cbhfgaauayh9eha7.westeurope-01.azurewebsites.net");
 
       socket.onopen = () => {
         if (unmounted.current) { socket.close(); return; }
