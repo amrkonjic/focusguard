@@ -83,7 +83,7 @@ useEffect(() => {
 
   console.log("šaljem fetch za:", roomId);
   
-  fetch(`http://localhost:3001/api/sessions/room/${roomId}`)
+  fetch(`https://focusguard-cbhfgaauayh9eha7.westeurope-01.azurewebsites.net/api/sessions/room/${roomId}`)
     .then(r => r.json())
     .then(data => {
       console.log("odgovor od servera:", data);
@@ -136,7 +136,7 @@ useEffect(() => {
     if (document.hidden) {
       console.log("šaljem tab switch fetch");
       try {
-        const res = await fetch("http://localhost:3001/api/rooms/tab-switch", {
+        const res = await fetch("https://focusguard-cbhfgaauayh9eha7.westeurope-01.azurewebsites.net/api/rooms/tab-switch", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ roomCode })

@@ -59,7 +59,7 @@ export default function GuardianPanel() {
     if (session) return;
     if (!roomId) return;
 
-    fetch(`http://localhost:3001/api/sessions/room/${roomId}`)
+    fetch(`https://focusguard-cbhfgaauayh9eha7.westeurope-01.azurewebsites.net/api/sessions/room/${roomId}`)
       .then(r => r.json())
       .then(data => {
         if (data.success) {

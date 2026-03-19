@@ -14,7 +14,7 @@ export default function Home() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("http://localhost:3001/api/rooms/create", { method: "POST" });
+      const res = await fetch("https://focusguard-cbhfgaauayh9eha7.westeurope-01.azurewebsites.net/api/rooms/create", { method: "POST" });
       const data = await res.json();
       setRoomCode(data.room.code);
       setRoomId(data.room.id);
@@ -35,7 +35,7 @@ export default function Home() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`http://localhost:3001/api/rooms/${joinCode.toUpperCase()}`);
+      const res = await fetch(`https://focusguard-cbhfgaauayh9eha7.westeurope-01.azurewebsites.net/api/rooms/${joinCode.toUpperCase()}`);
       const data = await res.json();
       if (!data.success) {
         setError("Room not found. Check the code and try again.");
