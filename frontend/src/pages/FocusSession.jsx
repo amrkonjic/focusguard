@@ -80,8 +80,6 @@ useEffect(() => {
     console.log("roomId je null, preskačem fetch");
     return;
   }
-
-  console.log("šaljem fetch za:", roomId);
   
   fetch(`https://focusguard-cbhfgaauayh9eha7.westeurope-01.azurewebsites.net/api/sessions/room/${roomId}`)
     .then(r => r.json())

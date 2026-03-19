@@ -16,6 +16,7 @@ export default function Home() {
     try {
       const res = await fetch("https://focusguard-cbhfgaauayh9eha7.westeurope-01.azurewebsites.net/api/rooms/create", { method: "POST" });
       const data = await res.json();
+      
       setRoomCode(data.room.code);
       setRoomId(data.room.id);
       setRole("focuser");

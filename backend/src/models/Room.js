@@ -9,7 +9,7 @@ function generateRoomCode() {
 }
 
 function createRoom() {
-  const id = uuidv4();
+  const id = uuidv4();            // 128-bitni nasumični string
   let code = generateRoomCode();
 
   while (getRoomByCode(code)) {

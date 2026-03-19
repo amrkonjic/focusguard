@@ -20,7 +20,7 @@ app.use(express.json());
 app.use('/api/rooms', roomRoutes);
 app.use('/api/sessions', sessionRoutes);
 
-// endpoint samo za dijagnostiku
+// endpoint samo za dijagnostiku - za brzu provjeru je li server ziv
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });

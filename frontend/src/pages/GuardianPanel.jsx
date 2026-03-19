@@ -45,6 +45,7 @@ export default function GuardianPanel() {
         totalPausedRef.current += Date.now() - pauseStartRef.current;
         pauseStartRef.current = null;
       }
+      
       setPaused(false);
       pausedRef.current = false;
       setBreakSecondsLeft(null);
