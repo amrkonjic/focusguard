@@ -14,11 +14,6 @@ Most focus apps rely on willpower: "please don't open Instagram." FocusGuard int
 
 > **Note on app blocking:** FocusGuard does not block other applications or browser tabs. Browsers cannot interact with OS-level processes without native integrations (e.g. Electron). Instead, the app detects when the user leaves the tab.
 
-## Architecture
-`Focuser (React) <-> Node.js + WebSocket <-> Guardian (React)`
-`| SQLite`
-
-Real-time communication between the two users is handled via **WebSockets**. The backend maintains an in-memory map of active rooms and connected clients, while SQLite persists room and session data.
 
 ## Tech Stack
 - **Frontend:** React, Vite
@@ -27,4 +22,4 @@ Real-time communication between the two users is handled via **WebSockets**. The
 - **Database:** SQLite
 
 ## Live Demo
-[Pogledaj Live Demo](https://polite-tree-0d40da803.2.azurestaticapps.net/)
+Demo: [https://polite-tree-0d40da803.2.azurestaticapps.net/](https://polite-tree-0d40da803.2.azurestaticapps.net/)
